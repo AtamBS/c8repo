@@ -1,5 +1,6 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, ActivityIndicator, Text, View } from 'react-native';
+import firebase from 'firebase';
 
 export default class App extends React.Component {
   render() {
@@ -9,6 +10,25 @@ export default class App extends React.Component {
       </View>
     );
   }
+}
+
+componentWillMount() {
+  firebase.initializeApp({
+    apiKey: "AIzaSyBlOmblpvHJewEQhobxLrttvcTT-qQybH4",
+    authDomain: "sporty-78a1a.firebaseapp.com",
+    databaseURL: "https://sporty-78a1a.firebaseio.com",
+    projectId: "sporty-78a1a",
+    storageBucket: "sporty-78a1a.appspot.com",
+    messagingSenderId: "393222333730"
+  });
+
+  firebase.auth().onAuthStateChanged(user => {
+    if(user) {
+      this.setState({ loggedIn: true });
+    } else {
+      this.setState({ loggedIn: false });
+    }
+  });
 }
 
 const styles = StyleSheet.create({
