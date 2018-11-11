@@ -3,14 +3,12 @@ import { StyleSheet, ActivityIndicator, Text, View } from 'react-native';
 import firebase from 'firebase';
 
 export default class App extends React.Component {
-  render() {
-    return (
-      <View style={styles.container}>
-        <Text>Open up App.js to start working on your app!</Text>
-      </View>
-    );
+  constructor(props) {
+    super(props);
+    this.state = {
+      loggedIn: null
+    }
   }
-}
 
 componentWillMount() {
   firebase.initializeApp({
@@ -29,13 +27,33 @@ componentWillMount() {
       this.setState({ loggedIn: false });
     }
   });
+  }
+
+  render() {
+    switch (this.state.loggedIn) {
+      case true:
+        return (
+          <View style={styles.container}>
+            <Home/>
+          </View>
+        );
+      case false:
+        return (
+          <View style={styles.container}>
+          <LoginForm />
+          </View>
+        );
+      default:
+        return <ActivityIndicator size="large" />
+    }
+  }
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    alignItems: 'center',
+    alignItems: 'stretch',
     justifyContent: 'center',
   },
 });
